@@ -14,7 +14,6 @@ def test_chatbot_refund_answer():
     test_case = LLMTestCase(
         input="What if these shoes don't fit?",
         actual_output="We offer a 30-day full refund at no extra cost.",
-        expected_output="You can return shoes within 30 days for a full refund.",
     )
 
     answer_relevancy = AnswerRelevancyMetric(threshold=0.7, include_reason=True)

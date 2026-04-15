@@ -22,7 +22,6 @@ def test_chatbot_refund_answer():
     # TODO 1 : créer un LLMTestCase avec :
     #   - input          : "What if these shoes don't fit?"
     #   - actual_output  : "We offer a 30-day full refund at no extra cost."
-    #   - expected_output: une reformulation équivalente de votre choix
     test_case = ...
 
     # TODO 2 : instancier AnswerRelevancyMetric avec threshold=0.7
