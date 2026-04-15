@@ -1,0 +1,9 @@
+[project]
+name = "deepeval-tuto"
+version = "0.1.0"
+description = "Hands-on DeepEval — atelier 15-20 min (Ollama local)"
+requires-python = ">=3.12"
+dependencies = [
+    "deepeval>=3.9.7",
+    "pytest==8.3.3",
+]
