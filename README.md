@@ -1,9 +1,10 @@
-# Hands-on DeepEval — 15-20 minutes
+# Hands-on DeepEval
 
 Un atelier pratique pour découvrir [DeepEval](https://deepeval.com), un framework
 open-source d'évaluation de LLMs inspiré de `pytest`. Vous allez écrire vos
 premiers tests d'évaluation, détecter une hallucination dans un pipeline RAG,
-puis lancer une évaluation en masse sur un petit dataset.
+lancer une évaluation en masse sur un petit dataset, générer un jeu de test
+synthétique, puis faire un A/B test entre deux prompts.
 
 L'ensemble tourne **en local avec Ollama** — aucune clé API nécessaire.
 
@@ -72,7 +73,9 @@ deepeval-tuto/
 ├── tests/
 │   ├── test_1_basics.py       # Exercice 1 — à compléter
 │   ├── test_2_rag.py          # Exercice 2 — à compléter
-│   └── test_3_dataset.py      # Exercice 3 — à compléter
+│   ├── test_3_dataset.py      # Exercice 3 — à compléter
+│   ├── test_4_synthetic.py    # Exercice 4 — à compléter
+│   └── test_5_ab_prompt.py    # Exercice 5 — à compléter
 └── solutions/                  # Corrigés — à consulter en cas de blocage
 ```
 
@@ -145,6 +148,58 @@ rapport !
 **Ce que vous apprenez** : le passage du test unitaire à l'**évaluation en
 masse**, workflow typique quand on benchmark un modèle ou qu'on veut suivre
 l'évolution de la qualité au fil des versions.
+
+---
+
+## Exercice 4 — Génération synthétique de cas de test
+
+**Fichier** : `tests/test_4_synthetic.py`
+
+Le problème n°1 en évaluation LLM : « on n'a pas de golden set ». DeepEval
+fournit un `Synthesizer` qui génère des paires (question, réponse attendue)
+directement à partir d'une base de connaissances.
+
+Vous partez de deux petits blocs de documentation (refunds, shipping),
+vous laissez le Synthesizer produire un golden par contexte, puis vous
+enchaînez sur une évaluation `AnswerRelevancyMetric`.
+
+**Objectif** : compléter les 4 `TODO` et lancer :
+
+```bash
+uv run deepeval test run tests/test_4_synthetic.py
+```
+
+**Ce que vous apprenez** : comment bootstrapper un jeu d'évaluation
+**sans l'écrire à la main**, à partir de vos propres documents.
+
+---
+
+## Exercice 5 — A/B testing d'un prompt
+
+**Fichier** : `tests/test_5_ab_prompt.py`
+
+C'est le cas d'usage le plus fréquent en vrai : *« ma nouvelle version
+de prompt est-elle meilleure que l'ancienne ? »*. Deux chatbots factices
+sont fournis — `v1_terse` (sec) et `v2_friendly` (chaleureux) — et vous
+les évaluez avec la **même** métrique GEval « Friendliness » sur les
+mêmes questions.
+
+Le fichier utilise `@pytest.mark.parametrize` pour factoriser les cas
+de test et `@log_hyperparameters` pour tagger le run (alias de
+l'expérience, variantes comparées).
+
+**Objectif** : compléter les 3 `TODO` et lancer :
+
+```bash
+uv run deepeval test run tests/test_5_ab_prompt.py
+```
+
+Dans le rapport, vous devez voir les scores de Friendliness de v2
+strictement supérieurs à ceux de v1 — c'est le verdict de l'A/B.
+
+**Ce que vous apprenez** : le workflow « compare deux variantes sur le
+même dataset », `pytest.mark.parametrize` pour éviter la duplication,
+et le tagging des runs avec `log_hyperparameters`.
 
 ---
 
